@@ -7,6 +7,7 @@ package tienda.servicios;
 
 import java.util.Collection;
 import tienda.entidades.Fabricante;
+import tienda.excepciones.FabricanteException;
 import tienda.persistencia.FabricanteDAO;
 
 /**
@@ -59,7 +60,7 @@ public class FabricanteServicio {
             int respuesta = Integer.parseInt(aux);
             
             if(respuesta>fabricantes.size() | respuesta<0){
-                throw new Exception("Ese código de fabricante no existe.");
+                throw new FabricanteException("Ese código de fabricante no existe.");
             }
             
             for (Fabricante fa : fabricantes) {
@@ -69,9 +70,12 @@ public class FabricanteServicio {
             }
             return fabricante;
         } catch (NumberFormatException e){
+            System.out.println("Ingreso no valido, intenta de vuelta.");
+            return fabricante=seleccionarFabricante();
+        } catch (FabricanteException e){
             e.getMessage();
             return fabricante=seleccionarFabricante();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }

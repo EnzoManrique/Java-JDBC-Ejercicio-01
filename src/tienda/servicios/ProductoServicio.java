@@ -8,6 +8,7 @@ package tienda.servicios;
 import java.util.Collection;
 import tienda.entidades.Fabricante;
 import tienda.entidades.Producto;
+import tienda.excepciones.ProductoException;
 import tienda.persistencia.ProductoDAO;
 
 /**
@@ -34,7 +35,7 @@ public class ProductoServicio {
             Collection<Producto> productos = listarNombreDeProductos();
             
             if (productos.isEmpty()) {
-                throw new Exception("No existen productos para imprimir.");
+                throw new ProductoException("No existen productos para imprimir.");
             }else {
                 System.out.println("");
                 for (Producto producto : productos) {
@@ -218,7 +219,7 @@ public class ProductoServicio {
             int respuesta = Integer.parseInt(aux);
             
             if(respuesta>productos.size() | respuesta<0){
-                throw new Exception("Ese código de producto no existe.");
+                throw new ProductoException("Ese código de producto no existe.");
             }
             
             for (Producto pr : productos) {
@@ -228,9 +229,12 @@ public class ProductoServicio {
             }
             return producto;
         } catch (NumberFormatException e){
+            System.out.println("Ingreso no valido, intenta de vuelta.");
+            return producto=seleccionarProducto();
+        } catch (ProductoException e){
             e.getMessage();
             return producto=seleccionarProducto();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
     }
